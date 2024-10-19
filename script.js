@@ -50,3 +50,37 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+// Function to save a task to Local Storage
+function saveTaskToStorage(taskText) {
+    let storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    storedTasks.push(taskText);
+    localStorage.setItem('tasks', JSON.stringify(storedTasks));
+}
+
+// Function to remove a task from Local Storage
+function removeTaskFromStorage(taskText) {
+    let storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    storedTasks = storedTasks.filter(task => task !== taskText);
+    localStorage.setItem('tasks', JSON.stringify(storedTasks));
+}
+
+// Function to load tasks from Local Storage
+function loadTasks() {
+    const storedTasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+    storedTasks.forEach(taskText => addTask(taskText, false)); // Avoid saving again to Local Storage when loading
+}
+
+// Event listener to add a task when the "Add Task" button is clicked
+addButton.addEventListener('click', function() {
+    const taskText = taskInput.value.trim();
+    addTask(taskText);
+});
+
+// Event listener to allow adding a task by pressing the "Enter" key
+taskInput.addEventListener('keypress', function(event) {
+    if (event.key === 'Enter') {
+        const taskText = taskInput.value.trim();
+        addTask(taskText);
+    }
+});
+});
